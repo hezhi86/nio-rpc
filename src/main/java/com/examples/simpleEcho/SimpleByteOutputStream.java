@@ -135,6 +135,7 @@ public class SimpleByteOutputStream extends OutputStream {
     }
 
     public byte[] toByteArray() {
+        /*
         if (count > 65535) {
             throw new ArrayStoreException();
         }
@@ -144,6 +145,8 @@ public class SimpleByteOutputStream extends OutputStream {
 
         System.arraycopy(buf, 0, bufNew, 1, count);
         return bufNew;
+        */
+        return Arrays.copyOf(buf, count);
     }
 
     public void flush() throws IOException {
