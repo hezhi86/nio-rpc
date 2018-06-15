@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.nio.ByteBuffer;
 
 /**
- * Created by hank on 6/11/18.
+ 1. 对性能要求高的代码用ByteBuffer代替ByteArrayOutputStream，如果你仍然要用ByteArrayOutputStream那么除去它的同步。
+ 2. 在部分情况下请避免使用ByteArrayOutputStream.toByteArray函数，因为它会复制一份内部byte数组。特别是当你的程序使用了几G内存时，垃圾收集器会显著地花费一些时间。
  */
+
 public class SimpleByteOutputStream extends OutputStream {
 
     /**
