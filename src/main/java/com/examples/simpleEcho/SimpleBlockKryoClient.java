@@ -25,6 +25,7 @@ import java.util.List;
  * Created by hank on 6/14/18.
  */
 public class SimpleBlockKryoClient {
+
     public static void main(String[] args) throws Exception {
         final Charset charset = Charset.forName("utf-8");
         final Xnio xnio = Xnio.getInstance();
@@ -41,17 +42,17 @@ public class SimpleBlockKryoClient {
             try {
                 // Send the greeting
                 //Channels.writeBlocking(channel, ByteBuffer.wrap("Hello world!!".getBytes(charset)));
-                long t1 = System.currentTimeMillis();
                 SimpleByteOutputStream bos = new SimpleByteOutputStream();
                 //ObjectOutputStream oo = new ObjectOutputStream(bos);
+                Kryo kryo = new Kryo();
+                Output output  = new Output(bos);
 
+                long t1 = System.currentTimeMillis();
                 List<Message> messageList = new ArrayList<>();
                 messageList.add(new Message());
                 messageList.add(new Message());
                 messageList.add(new Message());
 
-                Kryo kryo = new Kryo();
-                Output output  = new Output(bos);
                 kryo.writeObject(output, messageList);
                 output.flush(); //output.close();
 
@@ -65,8 +66,8 @@ public class SimpleBlockKryoClient {
                 System.out.println("Sent greeting string!  The response is...");
                 long t2 = System.currentTimeMillis();
                 int res =0;
-                ByteBuffer bufferIn = ByteBuffer.allocate(10);
-                ByteBuffer bufferWr = ByteBuffer.allocate(10);
+                ByteBuffer bufferIn = ByteBuffer.allocate(100);
+                ByteBuffer bufferWr = ByteBuffer.allocate(100);
 
                 // Now receive and print the whole response
                 while (Channels.readBlocking(channel, bufferIn) != -1) {

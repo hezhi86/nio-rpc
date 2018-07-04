@@ -55,10 +55,10 @@ public class SimpleBlockMarshClient {
             try {
                 // Send the greeting
                 //Channels.writeBlocking(channel, ByteBuffer.wrap("Hello world!!".getBytes(charset)));
-                long t1 = System.currentTimeMillis();
                 final SimpleByteOutputStream sos = new SimpleByteOutputStream(1000);
                 final ByteOutput byteOutput = Marshalling.createByteOutput(sos);
 
+                long t1 = System.currentTimeMillis();
                 List<Message> messageList = new ArrayList<>();
                 messageList.add(new Message());
                 messageList.add(new Message());
@@ -79,7 +79,7 @@ public class SimpleBlockMarshClient {
                 long t2 = System.currentTimeMillis();
                 int res =0;
                 ByteBuffer bufferIn = ByteBuffer.allocate(60);
-                ByteBuffer bufferWr = ByteBuffer.allocate(3000);
+                ByteBuffer bufferWr = ByteBuffer.allocate(300);
 
                 // Now receive and print the whole response
                 while (Channels.readBlocking(channel, bufferIn) != -1) {
