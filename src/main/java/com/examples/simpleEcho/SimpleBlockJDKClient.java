@@ -1,6 +1,5 @@
 package com.examples.simpleEcho;
 
-import org.jboss.marshalling.*;
 import org.xnio.*;
 import org.xnio.channels.Channels;
 import org.xnio.channels.ConnectedStreamChannel;
@@ -26,15 +25,6 @@ public class SimpleBlockJDKClient {
         final Charset charset = Charset.forName("utf-8");
         final Xnio xnio = Xnio.getInstance();
         final XnioWorker worker = xnio.createWorker(OptionMap.EMPTY);
-
-        // Get the factory for the "river" marshalling protocol
-        final MarshallerFactory marshallerFactory = Marshalling.getProvidedMarshallerFactory("river");
-
-        // Create a configuration
-        final MarshallingConfiguration configuration = new MarshallingConfiguration();
-        configuration.setVersion(4);
-        Marshaller marshaller = marshallerFactory.createMarshaller(configuration);
-        Unmarshaller unmarshaller = marshallerFactory.createUnmarshaller(configuration.clone());
 
         try {
             final IoFuture<StreamConnection> futureStream = worker.openStreamConnection(new InetSocketAddress("localhost", 12345), null, OptionMap.EMPTY);

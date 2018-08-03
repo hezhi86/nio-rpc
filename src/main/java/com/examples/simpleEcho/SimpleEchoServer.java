@@ -18,7 +18,16 @@ public final class SimpleEchoServer {
 
     public static void main(String[] args) throws Exception {
 
-        XnioWorker worker = Xnio.getInstance().createWorker(OptionMap.EMPTY);
+        XnioWorker worker = Xnio.getInstance().createWorker(OptionMap.builder()
+                .set(Options.WORKER_IO_THREADS, 2)
+                .set(Options.CONNECTION_HIGH_WATER, 1)
+                .set(Options.CONNECTION_LOW_WATER, 1)
+                .set(Options.WORKER_TASK_CORE_THREADS, 2)
+                .set(Options.WORKER_TASK_MAX_THREADS, 2)
+                .set(Options.TCP_NODELAY, true)
+                .set(Options.CORK, true)
+                .addAll(OptionMap.builder().getMap())
+                .getMap());
 
         AcceptingChannel<StreamConnection> server = worker.createStreamConnectionServer(
                 new InetSocketAddress(12345), acceptingChannel -> {
@@ -26,8 +35,7 @@ public final class SimpleEchoServer {
                         StreamConnection connection = acceptingChannel.accept();
                         if (connection != null) {
                             System.out.println("accepted");
-
-                            connection.setCloseListener(channel -> System.out.println("closed"));
+                            connection.setCloseListener(channel -> System.out.println("connection closed"));
                         }
                         ConduitStreamSourceChannel sourceChannel = connection.getSourceChannel();
                         ConduitStreamSinkChannel sinkChannel = connection.getSinkChannel();
@@ -49,6 +57,7 @@ public final class SimpleEchoServer {
                                     bb.clear();
                                 }
                                 System.out.println(builder.toString());
+                                System.out.println(String.valueOf(Thread.currentThread().getId()));
                             }catch(Exception e){
                                 e.printStackTrace();
                             }

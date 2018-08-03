@@ -1,20 +1,15 @@
 package com.examples.simpleEcho;
 
+import com.app.util.ByteOutputStream;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.serializers.CollectionSerializer;
-import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import org.xnio.*;
 import org.xnio.channels.Channels;
 import org.xnio.channels.ConnectedStreamChannel;
 import org.xnio.conduits.ConduitStreamSinkChannel;
 import org.xnio.conduits.ConduitStreamSourceChannel;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -42,7 +37,7 @@ public class SimpleBlockKryoClient {
             try {
                 // Send the greeting
                 //Channels.writeBlocking(channel, ByteBuffer.wrap("Hello world!!".getBytes(charset)));
-                SimpleByteOutputStream bos = new SimpleByteOutputStream();
+                ByteOutputStream bos = new ByteOutputStream();
                 //ObjectOutputStream oo = new ObjectOutputStream(bos);
                 Kryo kryo = new Kryo();
                 Output output  = new Output(bos);
